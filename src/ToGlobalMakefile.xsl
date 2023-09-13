@@ -18,6 +18,8 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 <xsl:output method="text" indent="no" encoding="UTF-8"/>
 
+<xsl:param name="path"/>
+
 <xsl:template match="target">
     <xsl:variable name="targetfile" select="concat('bin/.build/', @name, '.target')"/>
     <xsl:variable name="makefile" select="concat('bin/.build/', @name, '.make')"/>
@@ -103,7 +105,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 	<xsl:value-of select="$configfile"/>
 	<xsl:text> </xsl:text>
 	<xsl:value-of select="$vcxprojdir"/><xsl:text>/config
-&#9;xsltproc -o $@ support/Build/ToVCXProj.xsl </xsl:text>
+&#9;xsltproc -o $@ </xsl:text><xsl:value-of select="$path"/><xsl:text>ToVCXProj.xsl </xsl:text>
     <xsl:value-of select="$targetfile"/>
     <xsl:text>
 </xsl:text>
@@ -111,25 +113,25 @@ http://creativecommons.org/publicdomain/zero/1.0/
     <xsl:value-of select="$makefile"/>
     <xsl:text>: </xsl:text>
     <xsl:value-of select="$targetfile"/>
-    <xsl:text> support/Build/ToTargetMakefile.xsl
+    <xsl:text> </xsl:text><xsl:value-of select="$path"/><xsl:text>ToTargetMakefile.xsl
 &#9;mkdir -p $(dir $@)
-&#9;xsltproc -o $@ support/Build/ToTargetMakefile.xsl $&lt;
+&#9;xsltproc -o $@ </xsl:text><xsl:value-of select="$path"/><xsl:text>ToTargetMakefile.xsl $&lt;
 </xsl:text>
 
     <xsl:value-of select="$configfile"/>
     <xsl:text>: </xsl:text>
     <xsl:value-of select="$targetfile"/>
-    <xsl:text> support/Build/ToTargetConfigFile.xsl
+    <xsl:text> </xsl:text><xsl:value-of select="$path"/><xsl:text>ToTargetConfigFile.xsl
 &#9;mkdir -p $(dir $@)
-&#9;xsltproc -o $@ support/Build/ToTargetConfigFile.xsl $&lt;
+&#9;xsltproc -o $@ </xsl:text><xsl:value-of select="$path"/><xsl:text>ToTargetConfigFile.xsl $&lt;
 </xsl:text>
 
     <xsl:value-of select="$targetfile"/>
-    <xsl:text>: support/Build/ToOneTarget.xsl bin/.build/Makefile.expanded Makefile.build
+    <xsl:text>: </xsl:text><xsl:value-of select="$path"/><xsl:text>ToOneTarget.xsl bin/.build/Makefile.expanded Makefile.build
 &#9;mkdir -p $(dir $@)
 &#9;xsltproc -o $@ -param nameTarget "'</xsl:text>
     <xsl:value-of select="@name"/>
-    <xsl:text>'" support/Build/ToOneTarget.xsl bin/.build/Makefile.expanded
+    <xsl:text>'" </xsl:text><xsl:value-of select="$path"/><xsl:text>ToOneTarget.xsl bin/.build/Makefile.expanded
 
 </xsl:text>
 </xsl:template>
