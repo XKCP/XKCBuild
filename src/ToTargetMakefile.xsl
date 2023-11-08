@@ -58,6 +58,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
             ifneq ($(UNAME_S),Darwin)
             ifneq ($(UNAME_M),riscv64)
             ifneq ($(UNAME_M),riscv32)
+            ifneq ($(NO_FLAGS_NATIVE),1)
 </xsl:text>
     </xsl:if>
     <xsl:text>CFLAGS := $(CFLAGS) </xsl:text>
@@ -66,6 +67,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 </xsl:text>
     <xsl:if test=".= '-march=native' or .= '-mtune=native'">
         <xsl:text>endif
+            endif
             endif
             endif
             endif
@@ -80,6 +82,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
             ifneq ($(UNAME_S),Darwin)
             ifneq ($(UNAME_M),riscv64)
             ifneq ($(UNAME_M),riscv32)
+            ifneq ($(NO_FLAGS_NATIVE),1)
 </xsl:text>
     </xsl:if>
     <xsl:text>ASMFLAGS := $(ASMFLAGS) </xsl:text>
@@ -88,6 +91,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 </xsl:text>
     <xsl:if test=".= '-march=native' or .= '-mtune=native'">
         <xsl:text>endif
+            endif
             endif
             endif
             endif
