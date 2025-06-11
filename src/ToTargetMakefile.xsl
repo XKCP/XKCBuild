@@ -209,7 +209,7 @@ $(BINDIR):
 
 MAKE ?= gmake
 CC ?= gcc
-AR = ar
+AR ?= ar
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
