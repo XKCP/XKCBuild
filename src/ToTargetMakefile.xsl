@@ -159,14 +159,17 @@ SOURCES := $(SOURCES) </xsl:text>
         <xsl:value-of select="$object"/>
         <xsl:text>: </xsl:text>
         <xsl:value-of select="."/>
-        <xsl:text> $(HEADERS) $(INCLUDES)
+        <xsl:if test="local-name(.) = 's'">
+            <xsl:text> $(HEADERS) $(INCLUDES)</xsl:text>
+        </xsl:if>
+        <xsl:text>
 </xsl:text>
         <xsl:choose>
             <xsl:when test="local-name(.) = 's'">
                 <xsl:text>&#9;$(CC) $(INCLUDEFLAGS) $(ASMFLAGS) $(EXTRA_ASMFLAGS) </xsl:text>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:text>&#9;$(CC) $(INCLUDEFLAGS) $(CFLAGS) $(EXTRA_CFLAGS) </xsl:text>
+                <xsl:text>&#9;$(CC) $(INCLUDEFLAGS) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MP -MF $(@:.o=.d) -MT $@ </xsl:text>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="@gcc"/>
@@ -257,9 +260,17 @@ UNAME_M := $(shell uname -m)
     <xsl:apply-templates select="c|s"/>
 
     <xsl:text>
+-include $(OBJECTS:.o=.d)
+</xsl:text>
+
+    <xsl:text>
 bin/</xsl:text>
     <xsl:value-of select="@name"/>
-    <xsl:text>: $(BINDIR) $(OBJECTS)
+    <xsl:text>: $(BINDIR) $(OBJECTS)</xsl:text>
+    <xsl:if test="substring(@name, string-length(@name)-1, 2)='.a' or substring(@name, string-length(@name)-2, 3)='.so' or substring(@name, string-length(@name)-5, 6)='.dylib'">
+        <xsl:text> $(HEADERS)</xsl:text>
+    </xsl:if>
+    <xsl:text>
 &#9;mkdir -p $(dir $@)
 </xsl:text>
 
